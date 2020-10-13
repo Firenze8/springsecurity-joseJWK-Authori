@@ -1,0 +1,30 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: nacos-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos.mylearn.com:81
+      config:
+        server-addr: nacos.mylearn.com:81
+        file-extension: yaml
+        namespace: 02edb995-ed0a-4dd9-a10a-6ea3a2139aeb
+        group: DEFAULT_GROUP
+  ## gateway
+  #spring:
+  cloud.gateway.routes:
+    - id: api-service-route
+      uri: http://localhost:8090
+      predicates:
+        - Path=/api/**
+      filters:
+        - StripPrefix=1
+    - id: auth-service-route
+      uri: http://localhost:8081
+      predicates:
+        - Path=/auth/**
+      filters:
+        - StripPrefix=1
+  #security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://localhost:80811/.well-known/jwks.json'
